@@ -1,7 +1,9 @@
 <?php
-namespace App\Models\CategoriesModel;
+
+namespace App\Models;
 
 use \PDO;
+
 
 function findAll(PDO $conn): array
 {

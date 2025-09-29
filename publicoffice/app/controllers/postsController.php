@@ -4,6 +4,7 @@ namespace App\Controllers\PostsController;
 
 use \PDO;
 use \App\Models\PostsModel;
+use App\Models\CategoriesModel;  
 
 
 // Liste des derniers posts (page d'accueil)
@@ -49,22 +50,23 @@ function showAction(PDO $conn, string $id): void
 
 function addAction(PDO $conn): void
 {
-  
+    include_once '../app/models/postsModel.php';
+    include_once '../app/models/categoriesModel.php';
 
- include_once '../app/models/postsModel.php';
-
-   
+    // Récupérer les catégories pour le sidebar
+    $categories = \App\Models\findAllWithCount($conn);
 
     global $content, $title;
     $title = "Alex Parker - Add a post";
 
     // Affichage de la vue
     ob_start();
-    include '../app/views/posts/addpost.php'; // formulaire d'ajout
+    include '../app/views/posts/addpost.php';
     $content = ob_get_clean();
 
     include '../app/views/templates/default.php';
 }
+
 
 
 function insertAction(PDO $conn, array $data, array $files)

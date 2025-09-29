@@ -9,7 +9,7 @@ use App\Models\CategoriesModel;
 function indexAction(PDO $conn): array
 {
     // Récupérer toutes les catégories avec le nombre de posts (bonus)
-    $categories = CategoriesModel\findAllWithCount($conn);
-
+    $categories = 
+\App\Models\findAllWithCount($conn);
     return $categories;
 }

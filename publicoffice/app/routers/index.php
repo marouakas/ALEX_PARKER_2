@@ -1,7 +1,7 @@
 <?php
 // Charger le modèle des catégories
 include_once '../app/models/categoriesModel.php';
-$categories = \App\Models\CategoriesModel\findAll($conn);
+$categories = \App\Models\findAllWithCount($conn);
 
 
 // ROUTES DES ADMIN
