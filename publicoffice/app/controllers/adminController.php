@@ -18,12 +18,12 @@ function loginAction(PDO $conn, array $data)
 {
     include_once '../app/models/adminModel.php';
     // Récupérer le user correspondant dans $user
-    $user = AdminModel\findOneByEmailAndPassword($conn, $data);
+    $admin = \App\Models\AdminModel\findOneByEmailAndPassword($conn, $data);
 
     // Si on a un user on redirige vers le backoffice
-    if ($user):
+    if ($admin):
         // On lui met un badge et on le fait entrer
-        $_SESSION['user'] = $user;
+        $_SESSION['admin'] = $admin;
         header('Location: ' . ADMIN_BASE_URL . 'dashboard');
     // Sinon on redirige vers le formulaire de connexion
     else:

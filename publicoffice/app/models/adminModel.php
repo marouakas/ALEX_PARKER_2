@@ -7,7 +7,7 @@ use \PDO;
 function findOneByEmailAndPassword(PDO $conn, array $data)
 {
     $sql = "SELECT *
-            FROM users
+            FROM admin
             WHERE email = :email
               AND password = :password;";
     $rs = $conn->prepare($sql);
