@@ -1,0 +1,70 @@
+RewriteEngine on
+
+# --------------------------------------------------
+# ROUTE PAR DEFAUT : Liste des posts
+# PATTERN: /
+# CTRL: postsController
+# ACTION: indexAction
+# TITLE: Alex Parker - Blog
+RewriteRule ^$ index.php?posts=index [L]
+
+# --------------------------------------------------
+# ROUTE DU DETAIL D'UN POST
+# PATTERN: /posts/id/slug-du-post.html
+# CTRL: postsController
+# ACTION: showAction
+# TITLE: Alex Parker - Title du post
+RewriteRule ^posts/([1-9][0-9]*)/[a-z0-9][a-z0-9\-]*\.html$ index.php?posts=show&id=$1 [L]
+
+# --------------------------------------------------
+# ROUTE D'AJOUT D'UN POST : affichage du formulaire
+# PATTERN: /posts/add/form.html
+# CTRL: postsController
+# ACTION: addAction
+# TITLE: Alex Parker - Add a post
+RewriteRule ^posts/add/form\.html$ index.php?posts=addform [L]
+
+# --------------------------------------------------
+
+# ROUTE admin.login
+# URL: admin/login
+# PATTERN: ?admin=login
+RewriteRule ^admin/login$ index.php?admin=login [L]
+
+
+# ROUTE D'AJOUT D'UN POST : INSERT
+# PATTERN: /posts/add/insert.html
+# CTRL: postsController
+# ACTION: insertAction
+# PAS DE TITLE (redirection vers accueil)
+RewriteRule ^posts/add/insert\.html$ index.php?posts=insert [L]
+
+# --------------------------------------------------
+# ROUTE DE MODIFICATION D'UN POST : affichage du formulaire
+# PATTERN: /posts/id/slug-du-post/edit/form.html
+# CTRL: postsController
+# ACTION: editFormAction
+# TITLE: Alex Parker - Edit a post
+RewriteRule ^posts/([1-9][0-9]*)/[a-z0-9][a-z0-9\-]*/edit/form\.html$ index.php?posts=edit-form&id=$1 [L]
+
+# ROUTE DE MODIFICATION D'UN POST : UPDATE
+# PATTERN: /posts/id/slug-du-post/edit/update.html
+# CTRL: postsController
+# ACTION: updateAction
+# PAS DE TITLE (redirection vers détail du post)
+RewriteRule ^posts/([1-9][0-9]*)/[a-z0-9][a-z0-9\-]*/edit/update\.html$ index.php?posts=update&id=$1 [L]
+
+# --------------------------------------------------
+# ROUTE DE SUPPRESSION D'UN POST
+# PATTERN: /posts/id/slug-du-post/delete.html
+# CTRL: postsController
+# ACTION: deleteAction
+# PAS DE TITLE (redirection vers accueil)
+RewriteRule ^posts/([1-9][0-9]*)/[a-z0-9][a-z0-9\-]*/delete\.html$ index.php?posts=delete&id=$1 [L]
+
+# --------------------------------------------------
+# Ignorer certains fichiers (JS, CSS, images)
+RewriteCond %{REQUEST_URI} !\.(js|css|jpg|gif|zip|png|pdf)$ [NC]
+RewriteRule ^(.*)$ index.php [L]
+
+
