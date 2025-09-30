@@ -6,14 +6,29 @@ include_once '../app/controllers/postsController.php';
 
 switch ($_GET['posts']):
     case 'show':
-        PostsController\showAction($conn, $_GET['id']);
+        PostsController\showAction($conn, (int)$_GET['id']);
         break;
+    
     case 'addform':
-        PostsController\addAction($conn);
+        PostsController\addFormAction($conn);
         break;
+    
     case 'insert':
-        PostsController\insertAction($conn, $_POST, $_FILES);
+        PostsController\insertAction($conn, $_POST);
         break;
+    
+    case 'editform':
+        PostsController\editFormAction($conn, (int)$_GET['id']);
+        break;
+    
+    case 'update':
+        PostsController\updateAction($conn, (int)$_GET['id'], $_POST);
+        break;
+    
+    case 'delete':
+        PostsController\deleteAction($conn, (int)$_GET['id']);
+        break;
+    
     default:
         PostsController\indexAction($conn);
         break;

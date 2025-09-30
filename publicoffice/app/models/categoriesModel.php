@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\CategoriesModel;
 
 use \PDO;
-
 
 function findAll(PDO $conn): array
 {
@@ -11,6 +10,7 @@ function findAll(PDO $conn): array
     $rs = $conn->query($sql);
     return $rs->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function findAllWithCount(PDO $conn): array
 {

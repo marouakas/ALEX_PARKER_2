@@ -1,15 +1,10 @@
 <?php
 // Charger le modèle des catégories
 include_once '../app/models/categoriesModel.php';
-$categories = \App\Models\findAllWithCount($conn);
-
-
-// ROUTES DES ADMIN
-if (isset($_GET['admin'])) :
-    include_once '../app/routers/admin.php';
+$categories = \App\Models\CategoriesModel\findAllWithCount($conn);
 
 // ROUTES DES POSTS
-elseif (isset($_GET['posts'])) :
+if (isset($_GET['posts'])) :
     include_once '../app/routers/posts.php';
 
 // ROUTE PAR DÉFAUT

@@ -3,79 +3,106 @@
 namespace App\Controllers\PostsController;
 
 use \PDO;
-use \App\Models\PostsModel;
-use App\Models\CategoriesModel;  
 
-
-// Liste des derniers posts (page d'accueil)
 function indexAction(PDO $conn): void
 {
     include_once '../app/models/postsModel.php';
     include_once '../app/models/categoriesModel.php';
 
-    // Récupérer les 10 derniers posts
-    $posts = PostsModel\findAll($conn);
-
-    
+    $posts = \App\Models\PostsModel\findAll($conn, 10);
 
     global $content, $title;
-    // titre de la page
     $title = "Alex Parker - Blog";
     ob_start();
     include '../app/views/posts/index.php';
     $content = ob_get_clean();
 }
 
-// Détails d'un post
-function showAction(PDO $conn, string $id): void
+function showAction(PDO $conn, int $id): void
 {
     include_once '../app/models/postsModel.php';
-   
 
-    $post = PostsModel\findOneById($conn, $id);
+    $post = \App\Models\PostsModel\findOneById($conn, $id);
 
-   
-   
     global $content, $title;
-     $title = "Alex Parker - " . $post['title'] ;
+    $title = "Alex Parker - " . $post['title'];
     ob_start();
     include '../app/views/posts/show.php';
     $content = ob_get_clean();
-
-
- 
 }
 
-// Formulaire d'ajout
+function addFormAction(PDO $conn): void
+{
+    include_once '../app/models/categoriesModel.php';
 
-function addAction(PDO $conn): void
+    $categories = \App\Models\CategoriesModel\findAll($conn);
+
+    global $content, $title;
+    $title = "Alex Parker - Add a post";
+    ob_start();
+    include '../app/views/posts/form.php';
+    $content = ob_get_clean();
+}
+
+function insertAction(PDO $conn, array $postData): void
+{
+    include_once '../app/models/postsModel.php';
+
+    $data = [
+        'title' => $postData['title'],
+        'text' => $postData['text'],
+        'quote' => $postData['quote'] ?? '',
+        'category_id' => $postData['category_id'],
+        'image' => $postData['image'] ?? ''
+    ];
+
+    \App\Models\PostsModel\create($conn, $data);
+
+    header('Location: index.php');
+    exit;
+}
+
+function editFormAction(PDO $conn, int $id): void
 {
     include_once '../app/models/postsModel.php';
     include_once '../app/models/categoriesModel.php';
 
-    // Récupérer les catégories pour le sidebar
-    $categories = \App\Models\findAllWithCount($conn);
+    $post = \App\Models\PostsModel\findOneById($conn, $id);
+    $formCategories = \App\Models\CategoriesModel\findAll($conn);
 
     global $content, $title;
-    $title = "Alex Parker - Add a post";
-
-    // Affichage de la vue
+    $title = "Alex Parker - Edit a post";
     ob_start();
-    include '../app/views/posts/addpost.php';
+    include '../app/views/posts/form.php';
     $content = ob_get_clean();
-
-    include '../app/views/templates/default.php';
 }
 
-
-
-function insertAction(PDO $conn, array $data, array $files)
+function updateAction(PDO $conn, int $id, array $postData): void
 {
     include_once '../app/models/postsModel.php';
 
-    // On appelle le modèle pour créer le post
-    $response = PostsModel::create($conn, $data, $files);
+    $post = \App\Models\PostsModel\findOneById($conn, $id);
 
-    // Redirection vers la liste des posts
-    header('Location: /');
+    $data = [
+        'title' => $postData['title'],
+        'text' => $postData['text'],
+        'quote' => $postData['quote'] ?? '',
+        'category_id' => $postData['category_id'],
+        'image' => $post['image']
+    ];
+
+    \App\Models\PostsModel\update($conn, $id, $data);
+
+    header("Location: index.php?posts=show&id={$id}");
+    exit;
+}
+
+function deleteAction(PDO $conn, int $id): void
+{
+    include_once '../app/models/postsModel.php';
+
+    \App\Models\PostsModel\delete($conn, $id);
+
+    header('Location: index.php');
+    exit;
 }
